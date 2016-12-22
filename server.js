@@ -1,5 +1,5 @@
 const app = require ('express')();
-const logger = require 'morgan';
+const logger = require ('morgan');
 const http = require ('http').Server(app);
 var io = require('socket.io')(http);
 
@@ -9,18 +9,14 @@ const readline = require('readline');
 
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
-
+ // emits keypress
 process.stdin.on('keypress', (str, key) => {
   console.log(str)
   console.log(key)
-  sendKeypress(str, key)
+  io.emit(str);
 })
 
-function sendKeypress(str, key) {
-  io.on('emit', (socket) => /* emit the keypress here*/ );
-}
-
-io.on('connection', (socket) => console.log('user connected'));
+io.on('disconnect', (socket) => console.log('user disconnected'));
 
 io.on('connection', (socket) => console.log('user connected'));
 
@@ -28,5 +24,5 @@ port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
 
-app.listen(port, () => console.log('listening on port ', port);
+app.listen(port, () => console.log('listening on port ', port));
 
